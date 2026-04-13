@@ -204,7 +204,7 @@ FEED_BASELINE_TEMPLATE: Mapping[str, Any] = {
     'TSS_mg_L': 30.0,
     'TOC_mg_L': 5.0,
     'TDS_mg_L': 1500.0,
-    'source': 'Jain 2019 (Ga/As/P, Ca/Mg/Fe/Al/Ni); Li 2015 (Na/Cl/SO4); Lu 2010 (TSS); literature reviews (TOC)'
+    'source': 'Jain 2019 (Ga/As/P, Ca/Mg/Fe/Al/Ni); Li 2015 (Na/Cl/SO4, TSS, TDS); literature reviews (TOC)'
 }
 
 VALID_CO2_TAX_MODES: tuple[str, ...] = ("none", "energy_only", "full_lca")
@@ -1186,11 +1186,10 @@ IX_SPEC = StepSpec(
     stream_basis="pH-adjusted RO concentrate with Qc = 0.2 × Q and pH 2.0.",
     mass_balance_basis="Gallium reports to the eluate with the frozen IX separation recovery; raffinate leaves as an arsenic-bearing waste stream.",
     recovery_basis=(
-        "Frozen gallium-to-eluate recovery of 0.969 (96.9%). "
-        "Source: Huang et al. (MDPI Processes 2019, doi:10.3390/pr7120921), 'A Process for the Recovery "
-        "of Gallium from Gallium Arsenide Scrap' — DIAION CR11 column, 0.1 M H2SO4 elution, GaAs scrap feed. "
-        "Verify specific recovery figure (paper reports 99.3% purity; confirm whether 96.9% refers to "
-        "Ga loading + elution recovery or is derived from a mass balance in the thesis)."
+        "Frozen gallium-to-eluate recovery of 0.969 (96.9%), derived from breakthrough curve integration. "
+        "Source: Cheng et al. (MDPI Processes 2019, doi:10.3390/pr7120921), 'A Process for the Recovery "
+        "of Gallium from Gallium Arsenide Scrap' — DIAION CR11 column, 0.1 M H2SO4 elution, GaAs scrap feed, "
+        "1/20 dilution ratio, 35 BV loading (Fig. 3a)."
     ),
     sizing_basis="Six-column batch train with V_res,col = Qc / 129.6, 45 BV adsorption, 4 BV elution, 1 BV rinse.",
     cost_basis=(
@@ -1433,9 +1432,9 @@ SX_SPEC = StepSpec(
     mass_balance_basis="Gallium partitions first to the loaded organic and then to the strip liquor; raffinate leaves as an arsenic-bearing waste stream.",
     recovery_basis=(
         "Frozen extraction recovery of 0.773 (77.3%) followed by strip recovery of 0.975 (97.5%). "
-        "Extraction recovery source: Ye et al. (MDPI Sustainability 2020, doi:10.3390/su12051765), "
+        "Extraction recovery source: Chen et al. (MDPI Sustainability 2020, doi:10.3390/su12051765), "
         "'Recovery of Gallium from Simulated GaAs Waste Etching Solutions by Solvent Extraction' — "
-        "single-step extraction efficiency of 77.4% using 0.5 M Cyanex 272/kerosene at pH 2, O:A = 0.1. "
+        "single-step extraction efficiency of 77.3% using 0.5 M Cyanex 272/kerosene at pH 2, O:A = 0.1. "
         "Strip recovery 0.975 attributed to back-extraction conditions "
         "(Chen et al. 2020, doi:10.3390/su12051765; IAEA INIS technical report inis.iaea.org/records/c0q3n-1a978)."
     ),
@@ -1447,7 +1446,7 @@ SX_SPEC = StepSpec(
         "The first-in organic inventory is derived from the total SX residence time of 19/60 h.",
     ),
     sources=(
-        # Extraction recovery 77.4%, Cyanex 272 0.5 M, O:A = 0.1, pH 2 (Ye et al. 2020):
+        # Extraction recovery 77.3%, Cyanex 272 0.5 M, O:A = 0.1, pH 2 (Chen et al. 2020):
         "https://www.mdpi.com/2071-1050/12/5/1765",
         # SX scale-up methodology (Ge from coal fly ash):
         "https://www.mdpi.com/2075-163X/5/2/298",
@@ -1772,7 +1771,7 @@ _PRECIPITATION_BASE_CONSTANTS: dict = {
 }
 
 _SELECTIVE_LEACHING_BASE_CONSTANTS: dict = {
-    "lang_factor": 3.0,                           # Peters & Timmerhaus (2004) Table 6-21, solid-liquid handling; Ntengwe et al. (2019, doi:10.1007/s42461-019-00148-x) Lang≈2.97
+    "lang_factor": 3.0,                           # Peters & Timmerhaus (2004) Table 6-21, solid-liquid handling
     "naoh_kg_per_kg_cake": 0.66,                  # Ga(OH)₃ + 2 NaOH → NaGaO₂ + 2H₂O; target 120 g/L electrolyte; Xu et al. (2024)
     "naoh_price_eur_per_kg": 0.30,                # businessanalytiq.com, Mar 2025
     "filter_bag_cost_per_kg_cake_day": 0.258993,  # derived: 11.50 EUR/bag ÷ 14-d life ÷ bag capacity
